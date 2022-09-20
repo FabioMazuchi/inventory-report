@@ -25,3 +25,19 @@ def test_cria_produto():
         )
     )
     assert result == product
+
+    product1 = Product(
+        id,
+        produto,
+        empresa,
+        fabricacao,
+        validade,
+        serie,
+        instrucoes,
+    )
+    assert product1.id == id
+    assert product1.nome_do_produto == produto
+    assert product1.nome_da_empresa == empresa
+    assert product1.data_de_fabricacao == fabricacao
+    assert product1.data_de_validade == validade
+    assert product1.instrucoes_de_armazenamento == instrucoes
