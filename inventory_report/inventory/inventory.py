@@ -1,60 +1,20 @@
-# import inventory_report.reports.simple_report as inv
-# from ...inventory_report.reports.simple_report import SimpleReport
-from collections import Counter
+from inventory_report.reports.simple_report import SimpleReport
+from inventory_report.reports.complete_report import CompleteReport
+import xmltodict
 import csv
-from datetime import date
 import json
-from xml.dom import minidom
+import xml.etree.ElementTree as ET
 
 
-class SimpleReport:
-    @classmethod
-    def generate(cls, lista):
-        today = date.today().strftime("%Y-%m-%d")
-        venc_date_list = [item["data_de_validade"] for item in lista]
-        venc_date_list.append(today)
-        venc_date_list.sort()
-
-        next_date_venc = ""
-        for n in range(len(venc_date_list)):
-            if today == venc_date_list[n]:
-                next_date_venc = venc_date_list[n + 1]
-
-        old_date_fabr = min([item["data_de_fabricacao"] for item in lista])
-        list_name_company = Counter(
-            [item["nome_da_empresa"] for item in lista]
-        ).most_common()[0][0]
-
-        return (
-            f"Data de fabricação mais antiga: {old_date_fabr}\n"
-            f"Data de validade mais próxima: {next_date_venc}\n"
-            f"Empresa com mais produtos: {list_name_company}"
-        )
-
-
-class CompleteReport(SimpleReport):
-    @classmethod
-    def generate(cls, lista):
-        list_name_company = Counter(
-            [item["nome_da_empresa"] for item in lista]
-        )
-
-        string = ""
-        for item in list_name_company:
-            string += f"- {item}: {list_name_company[item]}\n"
-
-        return (
-            f"{super().generate(lista)}\n"
-            f"Produtos estocados por empresa:\n{string}"
-        )
-
-
-class Inventory(CompleteReport, SimpleReport):
+class Inventory:
     @classmethod
     def xml_list(cls, caminho):
-        with open(caminho, "r") as file:
-            xml = minidom.parse(file)
-            print(xml)
+        with open(caminho) as f:
+            res = xmltodict.parse(f.read())["dataset"]["record"]
+            result = []
+            for record in res:
+                result.append(record)
+            return result
 
     @classmethod
     def csv_list(cls, caminho):
@@ -76,6 +36,9 @@ class Inventory(CompleteReport, SimpleReport):
 
         if ".json" in caminho:
             lista = cls.json_list(caminho)
+
+        if ".xml" in caminho:
+            lista = cls.xml_list(caminho)
 
         if tipo == "simples":
             return SimpleReport.generate(lista)
