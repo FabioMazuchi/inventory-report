@@ -3,7 +3,6 @@ from inventory_report.reports.complete_report import CompleteReport
 import xmltodict
 import csv
 import json
-import xml.etree.ElementTree as ET
 
 
 class Inventory:

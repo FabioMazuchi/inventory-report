@@ -6,9 +6,17 @@ class SimpleReport:
     @classmethod
     def generate(cls, lista):
         today = date.today()
-        venc_date_list = min([date.fromisoformat(item["data_de_validade"]) for item in lista if date.fromisoformat(item["data_de_validade"]) > today])
+        venc_date_list = min(
+            [
+                date.fromisoformat(item["data_de_validade"])
+                for item in lista
+                if date.fromisoformat(item["data_de_validade"]) > today
+            ]
+        )
 
-        old_date_fabr = min([date.fromisoformat(item["data_de_fabricacao"]) for item in lista])
+        old_date_fabr = min(
+            [date.fromisoformat(item["data_de_fabricacao"]) for item in lista]
+        )
         list_name_company = Counter(
             [item["nome_da_empresa"] for item in lista]
         ).most_common()[0][0]
