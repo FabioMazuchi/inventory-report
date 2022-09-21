@@ -10,22 +10,6 @@ def test_cria_produto():
     serie = "123"
     instrucoes = "em ambiente refrigerado"
 
-    re = f"O produto {produto} fabricado em {fabricacao}"
-    sul = f"por {empresa} com validade até {validade} precisa"
-    result = f"{re} {sul} ser armazenado {instrucoes}."
-    product = str(
-        Product(
-            id,
-            produto,
-            empresa,
-            fabricacao,
-            validade,
-            serie,
-            instrucoes,
-        )
-    )
-    assert result == product
-
     product1 = Product(
         id,
         produto,
