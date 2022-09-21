@@ -1,14 +1,19 @@
 from collections import Counter
-from simple_report import SimpleReport
+from inventory_report.reports.simple_report import SimpleReport
 
 
 class CompleteReport(SimpleReport):
-    def generate(self, lista):
+    @classmethod
+    def generate(cls, lista):
         list_name_company = Counter(
             [item["nome_da_empresa"] for item in lista]
         )
+
+        string = ""
         for item in list_name_company:
-            print(item)
+            string += f"- {item}: {list_name_company[item]}\n"
+
         return (
-            f"{super().generate(lista)}\n" f"Produtos estocados por empresa:\n"
+            f"{super().generate(lista)}\n"
+            f"Produtos estocados por empresa:\n{string}"
         )
