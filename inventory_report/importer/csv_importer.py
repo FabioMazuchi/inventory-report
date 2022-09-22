@@ -10,6 +10,3 @@ class CsvImporter(Importer):
         with open(caminho, encoding="utf8") as file:
             result = csv.DictReader(file, delimiter=",", quotechar='"')
             return [row for row in result]
-
-
-# print(CsvImporter.import_data("inventory_report/data/inventory.csv"))
